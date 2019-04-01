@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "918579338158",
+    "firebase_url": "https://transplant-care.firebaseio.com",
+    "project_id": "transplant-care",
+    "storage_bucket": "transplant-care.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918579338158:android:fb048201fcd7bfb1",
+        "android_client_info": {
+          "package_name": "br.com.transplanteen.tcc.transplanteen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918579338158-99hl3pllim45eivq0qss4skajeik0aho.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.transplanteen.tcc.transplanteen",
+            "certificate_hash": "820dbd7d5cb44fe98288f3f81fc5d7f62ffb81ed"
+          }
+        },
+        {
+          "client_id": "918579338158-hccg3c9s8shfh0v0g4ofpoocm5p1r60m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAur3huVCttGWMUfyTqsf2K8ndui8vNJYs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918579338158-hccg3c9s8shfh0v0g4ofpoocm5p1r60m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
