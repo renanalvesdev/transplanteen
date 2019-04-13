@@ -1,5 +1,6 @@
 package br.com.transplanteen.tcc.transplanteen.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,19 +28,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import br.com.transplanteen.tcc.transplanteen.R;
+import br.com.transplanteen.tcc.transplanteen.TipoUsuario;
 import br.com.transplanteen.tcc.transplanteen.fragment.AgendaFragment;
 import br.com.transplanteen.tcc.transplanteen.fragment.PacientesFragment;
 import br.com.transplanteen.tcc.transplanteen.helper.ConfiguracaoFirebase;
+import br.com.transplanteen.tcc.transplanteen.helper.SimpleCallback;
+import br.com.transplanteen.tcc.transplanteen.model.Enfermeiro;
 import br.com.transplanteen.tcc.transplanteen.model.Usuario;
+import br.com.transplanteen.tcc.transplanteen.util.MessagesUtil;
+import dmax.dialog.SpotsDialog;
 
 public class EnfermeiroActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    //componentes de interface
-    private TextView textoNome, textoEmail;
-
+    private NavigationView navigationView;
+    private TextView textoNome, textoEmail, textoCirculo;
+    private AlertDialog dialogProcessando ;
     private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-    private String idUsuario = "";//ConfiguracaoFirebase.getIdUsuario();
+    private String idUsuario = ConfiguracaoFirebase.getIdUsuario();
+    private Usuario usuarioAtual;
+
+
     private final DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
 
     @Override
@@ -47,7 +56,9 @@ public class EnfermeiroActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enfermeiro);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
 
         //carrega tela principal
         AgendaFragment agendaFragment = new AgendaFragment();
@@ -64,40 +75,95 @@ public class EnfermeiroActivity extends AppCompatActivity
             }
         });
 */
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
+
+        textoCirculo = (TextView) headerView.findViewById(R.id.txtHeaderCircle);
         textoEmail = (TextView) headerView.findViewById(R.id.txtHeaderEmail);
         textoNome = (TextView) headerView.findViewById(R.id.txtHeaderNome);
 
-        /*recuperaDadosUsuario();*/
-    }
-
-    private void recuperaDadosUsuario(){
-
-        DatabaseReference usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
-        usuarioRef.addValueEventListener(new ValueEventListener() {
+        textoCirculo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    Usuario usuarioAux = dataSnapshot.getValue(Usuario.class);
-                    textoNome.setText(usuarioAux.getNome());
-                    textoEmail.setText(usuarioAux.getEmail());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onClick(View v) {
+                drawer.closeDrawers();
+                abrirPerfilUsuario();
             }
         });
+
+        dialogProcessando = new SpotsDialog.Builder().setContext(this).setMessage("Carregando").setCancelable(false).build();
+        carregaUsuarioAtual();
+        //recuperaDadosUsuario();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(EnfermeiroActivity.this, "Sucesso ao logar", Toast.LENGTH_SHORT).show();
+    }
+
+
+    //carrega o usuario atual logado no firebase
+    public void carregaUsuarioAtual(){
+        dialogProcessando.show();
+        ConfiguracaoFirebase.getUsuarioAtual(new SimpleCallback<Usuario>() {
+            @Override
+            public void callback(Usuario usuario) {
+                if(usuario != null){
+                    usuarioAtual = usuario;
+                    exibeItemMenu();
+                    recuperaDadosUsuario();
+                };
+            }
+        });
+    }
+
+    public void exibeItemMenu(){
+        Menu nav_menu = navigationView.getMenu();
+        if(usuarioAtual.getTipo().equals(TipoUsuario.ENFERMEIRO.toString())){
+            nav_menu.findItem(R.id.nav_meu_diario).setVisible(false);
+            nav_menu.findItem(R.id.nav_ingestao_liquido).setVisible(false);
+            nav_menu.findItem(R.id.nav_meu_amigo_enfermeiro).setVisible(false);
+            nav_menu.findItem(R.id.nav_visitas_ao_hospital).setVisible(false);
+        }
+
+        else if(usuarioAtual.getTipo().equals(TipoUsuario.PACIENTE.toString())){
+            nav_menu.findItem(R.id.nav_agenda).setVisible(false);
+            nav_menu.findItem(R.id.nav_pacientes).setVisible(false);
+        }
+        
+    }
+
+    //direciona o usuario para seu perfil (paciente ou enfermeiro)
+    public void abrirPerfilUsuario() {
+
+        String tipo = usuarioAtual.getTipo();
+
+        if (tipo.equals(TipoUsuario.ENFERMEIRO.toString()))
+            startActivity(new Intent(getApplicationContext(), CadastroEnfermeiroActivity.class));
+        else if (tipo.equals(TipoUsuario.PACIENTE.toString()))
+            startActivity(new Intent(getApplicationContext(), NovoPacienteActivity.class));
+
+    }
+
+    //carrega dados do usuario no nav_header (titulo, subtitulo e circulo com primeira letra )
+    private void recuperaDadosUsuario() {
+
+        if(usuarioAtual != null){
+            String txtCirculo = String.valueOf(usuarioAtual.getNome().charAt(0));
+            textoNome.setText(usuarioAtual.getNome());
+            textoEmail.setText(usuarioAtual.getEmail());
+            textoCirculo.setText(txtCirculo);
+        }
+
+        dialogProcessando.dismiss();
     }
 
     private void deslogar() {
@@ -153,9 +219,7 @@ public class EnfermeiroActivity extends AppCompatActivity
             FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
             fragment.replace(R.id.frameContainer, agendaFragment);
             fragment.commit();
-        }
-
-        else if (id == R.id.nav_pacientes) {
+        } else if (id == R.id.nav_pacientes) {
             PacientesFragment pacientesFragment = new PacientesFragment();
             FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
             fragment.replace(R.id.frameContainer, pacientesFragment);

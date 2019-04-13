@@ -1,5 +1,6 @@
 package br.com.transplanteen.tcc.transplanteen.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +20,19 @@ public class DataUtil {
         }
 
         return  retorno;
+    }
+
+    public static String timestampParaData(String timestamp){
+        long dataTimestamp = Long.parseLong(timestamp);
+
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(dataTimestamp);
+
+        return format.format(calendar.getTime());
+
+
     }
 
     public static String  calculaIdade(String timestamp){

@@ -34,7 +34,7 @@ public class AdapterPacientes extends RecyclerView.Adapter <AdapterPacientes.MyV
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Paciente paciente = pacientes.get(i);
-        myViewHolder.dataNascimento.setText(DataUtil.calculaIdade(paciente.getDataNascimento().toString()));
+        myViewHolder.dataNascimento.setText(", " + DataUtil.calculaIdade(paciente.getDataNascimento().toString()) + " anos");
         myViewHolder.nome.setText(paciente.getNome());
         myViewHolder.tipoTransplante.setText(paciente.getTipoTransplante());
     }

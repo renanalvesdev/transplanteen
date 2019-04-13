@@ -42,6 +42,12 @@ dependencies {
     //Dependência dialog de progresso
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
+    //Dependência para abas
+    implementation 'com.ogaclejapan.smarttablayout:library:1.7.0@aar'
+
+    //Optional: see how to use the utility.
+    implementation 'com.ogaclejapan.smarttablayout:utils-v4:1.7.0@aar'
+
 }
 
 

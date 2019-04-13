@@ -4,10 +4,19 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_circle">Teste</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="action_sair">Sair</string>
+
+
+    <string name="consulta">Consulta</string>
+
+    <!--Abas de paciente -->
+    <string name="dashboardPaciente">Dashboard</string>
+    <string name="consultasPaciente">Consultas</string>
+
 
     <string-array name="tipo_transplante">
         <item>Tipo de transplante ...</item>

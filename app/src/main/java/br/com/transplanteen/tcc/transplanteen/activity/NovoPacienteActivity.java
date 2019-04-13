@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Calendar;
 
 import br.com.transplanteen.tcc.transplanteen.R;
+import br.com.transplanteen.tcc.transplanteen.TipoUsuario;
 import br.com.transplanteen.tcc.transplanteen.helper.ConfiguracaoFirebase;
+import br.com.transplanteen.tcc.transplanteen.helper.SimpleCallback;
 import br.com.transplanteen.tcc.transplanteen.model.Enfermeiro;
 import br.com.transplanteen.tcc.transplanteen.model.Paciente;
 import br.com.transplanteen.tcc.transplanteen.model.Usuario;
@@ -38,11 +41,13 @@ public class NovoPacienteActivity extends AppCompatActivity {
 
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private TextView mDisplayDate;
-    private EditText campoNomePaciente, campoDataNascimento, campoCpfPaciente, campoEmail, campoSenha;
+    private TextInputLayout campoNomePaciente, campoDataNascimento, campoCpfPaciente, campoEmail, campoSenha, campoRepeteSenha, mDisplayDate;
     private Spinner campoTipoTransplante;
     private AlertDialog dialog;
     private Button botaoCadastrarPaciente;
+    private Paciente paciente = new Paciente();
+    private Usuario usuarioAtual = new Usuario();
+    private String idUsuario = ConfiguracaoFirebase.getIdUsuario();
 
     FirebaseAuth mAuth1, mAuth2;
 
@@ -53,9 +58,15 @@ public class NovoPacienteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_novo_paciente);
 
         inicializaComponentes();
-        carregarDadosSpinner();
+        carregarTipoTransplanteSpinner();
 
-        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+        if (idUsuario != null && !idUsuario.isEmpty()) {
+            carregaUsuarioAtual();
+        }
+
+
+        //inicializando picker de data
+        mDisplayDate.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -80,7 +91,7 @@ public class NovoPacienteActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
                 String data = dayOfMonth + "/" + month + "/" + year;
-                mDisplayDate.setText(data);
+                mDisplayDate.getEditText().setText(data);
             }
         };
 
@@ -101,11 +112,77 @@ public class NovoPacienteActivity extends AppCompatActivity {
 
     }
 
+    //carrega o usuario atual logado no firebase
+    public void carregaUsuarioAtual() {
+        ConfiguracaoFirebase.getUsuarioAtual(new SimpleCallback<Usuario>() {
+            @Override
+            public void callback(Usuario usuario) {
+                if (usuario != null) {
+                    usuarioAtual.setNome(usuario.getNome());
+                    usuarioAtual.setEmail(usuario.getEmail());
+                    usuarioAtual.setTipo(usuario.getTipo());
+
+                    if (usuarioAtual.getTipo().equals(TipoUsuario.PACIENTE.toString())) {
+                        carregaDadosPacienteFirebase();
+                    }
+                }
+                ;
+            }
+        });
+    }
+
+
+    public void carregaDadosPacienteFirebase() {
+        Paciente.getPaciente(new SimpleCallback<Paciente>() {
+            @Override
+            public void callback(Paciente pacienteRetorno) {
+                if (pacienteRetorno != null) {
+                    paciente.setNome(pacienteRetorno.getNome());
+                    paciente.setCpf(pacienteRetorno.getCpf());
+                    paciente.setDataNascimento(pacienteRetorno.getDataNascimento());
+                    paciente.setTipoTransplante(pacienteRetorno.getTipoTransplante());
+                    populaComponentes();
+                }
+                ;
+            }
+        });
+    }
+
+    public void populaComponentes() {
+        campoNomePaciente.getEditText().setText(paciente.getNome());
+        campoCpfPaciente.getEditText().setText(paciente.getCpf());
+        mDisplayDate.getEditText().setText(DataUtil.timestampParaData(paciente.getDataNascimento()));
+        carregaValorTipoTransplante(paciente.getTipoTransplante());
+        campoEmail.getEditText().setText(usuarioAtual.getEmail());
+
+        somenteLeitura();
+
+    }
+
+    public void somenteLeitura() {
+        campoNomePaciente.getEditText().setEnabled(false);
+        campoCpfPaciente.getEditText().setEnabled(false);
+        mDisplayDate.getEditText().setEnabled(false);
+        campoTipoTransplante.setEnabled(false);
+        campoEmail.getEditText().setEnabled(false);
+        campoSenha.getEditText().setVisibility(View.GONE);
+        campoRepeteSenha.getEditText().setVisibility(View.GONE);
+
+        botaoCadastrarPaciente.setVisibility(View.GONE);
+    }
+
+    public void carregaValorTipoTransplante(String valor) {
+        ArrayAdapter myAdap = (ArrayAdapter) campoTipoTransplante.getAdapter();
+        int spinnerPosition = myAdap.getPosition(valor);
+        campoTipoTransplante.setSelection(spinnerPosition);
+    }
+
     private void inicializaComponentes() {
 
         mDisplayDate = findViewById(R.id.textViewDataNascimento);
         campoEmail = findViewById(R.id.editEmailPaciente);
         campoSenha = findViewById(R.id.editSenhaPaciente);
+        campoRepeteSenha = findViewById(R.id.editRepitaSenhaPaciente);
         campoCpfPaciente = findViewById(R.id.editCpfPaciente);
         campoNomePaciente = findViewById(R.id.editNomePaciente);
         campoTipoTransplante = findViewById(R.id.spinnerTipoTransplantePaciente);
@@ -113,11 +190,11 @@ public class NovoPacienteActivity extends AppCompatActivity {
     }
 
 
-    private void carregarDadosSpinner() {
-        String[] estados = getResources().getStringArray(R.array.tipo_transplante);
+    private void carregarTipoTransplanteSpinner() {
+        String[] tipoTransplante = getResources().getStringArray(R.array.tipo_transplante);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item,
-                estados
+                tipoTransplante
         );
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -171,6 +248,7 @@ public class NovoPacienteActivity extends AppCompatActivity {
                     usuario.setId(idPaciente);
                     usuario.setEmail(paciente.getEmail());
                     usuario.setSenha(paciente.getSenha());
+                    usuario.setNome(paciente.getNome());
                     usuario.setTipo("P");
                     usuario.salvar();
 
@@ -195,12 +273,12 @@ public class NovoPacienteActivity extends AppCompatActivity {
 
 
     public Paciente inicializaPaciente() {
-        String cpfPaciente = campoCpfPaciente.getText().toString();
-        String nomePaciente = campoNomePaciente.getText().toString();
+        String cpfPaciente = campoCpfPaciente.getEditText().getText().toString();
+        String nomePaciente = campoNomePaciente.getEditText().getText().toString();
         String tipoTransplantePaciente = campoTipoTransplante.getSelectedItem().toString();
-        String dataNascimentoPaciente = mDisplayDate.getText().toString();
-        String emailPaciente = campoEmail.getText().toString();
-        String senhaPaciente = campoSenha.getText().toString();
+        String dataNascimentoPaciente = mDisplayDate.getEditText().getText().toString();
+        String emailPaciente = campoEmail.getEditText().getText().toString();
+        String senhaPaciente = campoSenha.getEditText().getText().toString();
 
 
         Paciente paciente = new Paciente();

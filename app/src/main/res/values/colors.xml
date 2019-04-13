@@ -3,6 +3,12 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#60dbca</color>
     <color name="colorAccent">#64c8ba</color>
+
+    <color name="grayLight">#fafafa</color>
+    <color name="starblue">#09c6d4</color>
+    <color name="endblue">#0bcce6</color>
+
     <color name="azulEscuro">#4ca396</color>
     <color name="background_material_light">#fafafa</color>
+    <color name="label_menu">#ffffff</color>
 </resources>

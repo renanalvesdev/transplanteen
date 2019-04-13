@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,8 +36,10 @@ import br.com.transplanteen.tcc.transplanteen.R;
 import br.com.transplanteen.tcc.transplanteen.activity.CadastroEnfermeiroActivity;
 import br.com.transplanteen.tcc.transplanteen.activity.EnfermeiroActivity;
 import br.com.transplanteen.tcc.transplanteen.activity.NovoPacienteActivity;
+import br.com.transplanteen.tcc.transplanteen.activity.PacienteActivity;
 import br.com.transplanteen.tcc.transplanteen.adapter.AdapterPacientes;
 import br.com.transplanteen.tcc.transplanteen.helper.ConfiguracaoFirebase;
+import br.com.transplanteen.tcc.transplanteen.helper.RecyclerItemClickListener;
 import br.com.transplanteen.tcc.transplanteen.model.Enfermeiro;
 import br.com.transplanteen.tcc.transplanteen.model.Paciente;
 
@@ -117,12 +120,39 @@ public class PacientesFragment extends Fragment {
 
         pacientesRef = ConfiguracaoFirebase.getFirebaseDatabase().child("enfermeiro_paciente").child(ConfiguracaoFirebase.getIdUsuario());
 
+        //configura adapter
+        adapterPacientes = new AdapterPacientes(pacientes, view.getContext());
 
+        //configura recycler view
         recyclerViewPacientes = (RecyclerView) view.findViewById(R.id.recyclerPacientes);
         recyclerViewPacientes.setHasFixedSize(true);
         recyclerViewPacientes.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterPacientes = new AdapterPacientes(pacientes, view.getContext());
         recyclerViewPacientes.setAdapter(adapterPacientes);
+
+        //configurar evento de clique no recycler view
+        recyclerViewPacientes.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(),
+                recyclerViewPacientes,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Paciente paciente = pacientes.get(position);
+                        Intent i = new Intent(getActivity(), PacienteActivity.class);
+                        i.putExtra("paciente", paciente);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+        ));
 
         //Recupera pacientes
         recuperarPacientes();

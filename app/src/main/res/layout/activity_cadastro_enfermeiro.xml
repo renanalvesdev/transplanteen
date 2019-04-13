@@ -24,16 +24,8 @@
         android:background="@drawable/bg_edit_text"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Dados do Enfermeiro"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -142,6 +134,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
             android:background="@drawable/bg_edit_text"
+            android:drawableLeft="@drawable/ic_mail_outline_black_24dp"
+            android:drawablePadding="5dp"
             android:hint="E-mail"
             android:inputType="text"
             android:padding="8dp" />
@@ -152,6 +146,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-2dp"
             android:background="@drawable/bg_edit_text"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
             android:ems="10"
             android:hint="Nova senha"
             android:inputType="textPassword"

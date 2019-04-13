@@ -25,7 +25,9 @@
             android:name=".activity.EnfermeiroActivity"
             android:label="@string/title_activity_enfermeiro"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.NovoPacienteActivity"></activity>
+        <activity android:name=".activity.NovoPacienteActivity" />
+        <activity android:name=".activity.PacienteActivity" />
+        <activity android:name=".activity.ConsultaActivity"></activity>
     </application>
 
 </manifest>

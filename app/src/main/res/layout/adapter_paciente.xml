@@ -12,21 +12,27 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <TextView
-            android:id="@+id/textNomePacienteLista"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Renan da Silva Alves"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textIDataNascimentoPaciente"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="16 Anos" />
+            <TextView
+                android:id="@+id/textNomePacienteLista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Renan da Silva Alves"
+                android:layout_marginRight="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textIDataNascimentoPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="16 Anos" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textTipoTransplantePacienteLista"
@@ -34,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Transplante de Rim"
-            android:textColor="@android:color/holo_blue_dark" />
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="16sp" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

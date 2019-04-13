@@ -2,13 +2,10 @@ package br.com.transplanteen.tcc.transplanteen.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -22,9 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,11 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -49,13 +41,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import br.com.transplanteen.tcc.transplanteen.R;
 import br.com.transplanteen.tcc.transplanteen.helper.ConfiguracaoFirebase;
 import br.com.transplanteen.tcc.transplanteen.model.Enfermeiro;
 import br.com.transplanteen.tcc.transplanteen.model.Usuario;
+import dmax.dialog.SpotsDialog;
 
 public class AutenticacaoActivity extends AppCompatActivity {
 
@@ -64,8 +54,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
     private TextView textoCadastro;
     private Switch tipoAcesso;
     private ProgressBar progressBar;
-
-    private Usuario usuarioDao = new Usuario();
+    private android.app.AlertDialog dialog;
     private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
 
@@ -91,10 +80,15 @@ public class AutenticacaoActivity extends AppCompatActivity {
                 campoInscricao = mView.findViewById(R.id.editNumeroInscricao);
                 botaoConsultar = mView.findViewById(R.id.buttonConsultar);
 
+                builder.setView(mView);
+                final AlertDialog dialogConsultaCoren = builder.create();
+                dialogConsultaCoren.show();
 
                 botaoConsultar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        android.app.AlertDialog dialog = new SpotsDialog.Builder().setContext(AutenticacaoActivity.this).setMessage("Salvando paciente").setCancelable(false).build();
+                        dialog.show();
                         Enfermeiro enfermeiro = consultaEnfermeiro(campoInscricao.getText().toString());
 
                         if (enfermeiro != null) {
@@ -106,23 +100,24 @@ public class AutenticacaoActivity extends AppCompatActivity {
                             intent.putExtra("tipoRegistro", enfermeiro.getTipoRegistro());
                             intent.putExtra("situacao", enfermeiro.getSituacaoInscricao());
 
+                            dialogConsultaCoren.dismiss();
                             startActivity(intent);
                             //toastAux("Nome: " + enfermeiro.getNome());
                         }
+
+                        dialog.dismiss();
                     }
                 });
 
-                builder.setView(mView);
-                AlertDialog dialog = builder.create();
-                dialog.show();
+
             }
         });
 
 
-        //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         //deslogar
-        //autenticacao.signOut();
+        autenticacao.signOut();
         //verifica usuario logado
         //verificaUsuarioLogado();
 
@@ -134,46 +129,17 @@ public class AutenticacaoActivity extends AppCompatActivity {
 
                 if (!email.isEmpty()) {
                     if (!senha.isEmpty()) {
-
-                        progressBar.setVisibility(View.VISIBLE);
-                        botaoAcessar.setVisibility(View.GONE);
-         /*               //Verifica estado do switch
-                        if (tipoAcesso.isChecked()) {
-                            autenticacao.createUserWithEmailAndPassword(
-                                    email, senha
-                            ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(AutenticacaoActivity.this, "Cadastro realizado com sucesso !", Toast.LENGTH_SHORT).show();
-                                        abrirTelaPrincipal();
-                                    } else {
-                                        String erroExcecao = "";
-                                        try {
-                                            throw task.getException();
-                                        } catch (FirebaseAuthWeakPasswordException e) {
-                                            erroExcecao = "Digite uma senha mais forte";
-                                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                                            erroExcecao = "Por favor, digite um e-mail valido";
-                                        } catch (FirebaseAuthUserCollisionException e) {
-                                            erroExcecao = "Esta conta já foi cadastrada";
-                                        } catch (Exception e) {
-                                            erroExcecao = "Erro ao cadastrar usuário: " + e.getMessage().toString();
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-                            });
-                        } else*/ //Login
+                        carregando(true);
                         autenticacao.signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+
                                 if (task.isSuccessful()) {
                                     String usuarioId = task.getResult().getUser().getUid();
                                     recuperaUsuario(usuarioId);
                                 } else {
-
                                     Toast.makeText(AutenticacaoActivity.this, "Erro ao logar", Toast.LENGTH_SHORT).show();
+                                    carregando(false);
                                 }
                             }
                         });
@@ -192,6 +158,16 @@ public class AutenticacaoActivity extends AppCompatActivity {
 
     }
 
+    public void carregando(boolean status){
+        int statusProgress, statusBotao;
+        statusProgress = status ? View.VISIBLE :  View.GONE;
+        statusBotao = statusProgress == View.VISIBLE ? View.GONE : View.VISIBLE;
+
+        progressBar.setVisibility(statusProgress);
+        botaoAcessar.setVisibility(statusBotao);
+
+    }
+
     private void toastAux(String texto) {
         Toast.makeText(AutenticacaoActivity.this, texto, Toast.LENGTH_LONG).show();
     }
@@ -206,15 +182,10 @@ public class AutenticacaoActivity extends AppCompatActivity {
 
     private void abrirTelaPrincipal(String usuarioId) {
         if (usuarioId != null) {
-            if (usuarioId.equals("E"))
-                startActivity(new Intent(getApplicationContext(), EnfermeiroActivity.class));
-            else if (usuarioId.equals("P"))
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            Toast.makeText(AutenticacaoActivity.this, "Sucesso ao logar", Toast.LENGTH_SHORT).show();
-            finish();
 
-            progressBar.setVisibility(View.GONE);
-            botaoAcessar.setVisibility(View.VISIBLE);
+            startActivity(new Intent(getApplicationContext(), EnfermeiroActivity.class));
+            carregando(false);
+            finish();
         }
     }
 
@@ -265,6 +236,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
     }
 
     private Enfermeiro consultaEnfermeiro(String numeroInscricao) {
+
         Enfermeiro enfermeiro = null;
         RecuperaDadosXML recuperaDadosXML = new RecuperaDadosXML();
         String teste = "";
@@ -301,6 +273,8 @@ public class AutenticacaoActivity extends AppCompatActivity {
                 toastAux("Nenhum resultado encontrado");
             } else
                 toastAux("Mais de um resultado encontrado");
+
+            campoInscricao.setText("");
 
         } catch (JSONException e) {
             e.printStackTrace();

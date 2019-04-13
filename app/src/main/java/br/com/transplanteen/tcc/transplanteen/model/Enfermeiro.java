@@ -1,8 +1,14 @@
 package br.com.transplanteen.tcc.transplanteen.model;
 
+import android.support.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import br.com.transplanteen.tcc.transplanteen.helper.ConfiguracaoFirebase;
+import br.com.transplanteen.tcc.transplanteen.helper.SimpleCallback;
 
 public class Enfermeiro {
 
@@ -27,6 +33,27 @@ public class Enfermeiro {
         DatabaseReference enfermeiros = firebaseRef.child("enfermeiros").child(id);
 
         enfermeiros.setValue(this);
+    }
+
+    public static void getEnfermeiro( final SimpleCallback<Enfermeiro> myCallback) {
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        DatabaseReference enfermeirosRef = firebaseRef.child("enfermeiros").child(ConfiguracaoFirebase.getIdUsuario());
+
+        enfermeirosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    Enfermeiro enfermeiro = dataSnapshot.getValue(Enfermeiro.class);
+                    myCallback.callback(enfermeiro);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public String getId() {
