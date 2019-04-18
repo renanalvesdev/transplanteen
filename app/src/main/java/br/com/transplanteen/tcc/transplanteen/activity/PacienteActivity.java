@@ -38,12 +38,12 @@ public class PacienteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        //Configurar abas
+        //Configurar abas (passando dados do paciente como bundle)
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(),
                 FragmentPagerItems.with(this)
                         .add("Dashboard", DashboardPacienteFragment.class, bundle)
-                        .add("Consultas", ConsultasPacienteFragment.class).create()
+                        .add("Consultas", ConsultasPacienteFragment.class, bundle).create()
         );
 
         ViewPager viewPager = findViewById(R.id.viewpager);
