@@ -34,6 +34,11 @@
             android:icon="@drawable/ic_visitas_hospital_24dp"
             android:title="Visitas ao hospital" />
 
+        <item
+            android:id="@+id/nav_minhas_medicacoes"
+            android:icon="@drawable/ic_pilula_26dp"
+            android:title="Minhas medicações" />
+
         <!-- <item
              android:id="@+id/nav_gallery"
              android:icon="@drawable/ic_menu_gallery"

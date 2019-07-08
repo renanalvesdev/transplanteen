@@ -66,10 +66,7 @@ public class ConsultasPacienteFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_consultas_paciente, container, false);
         paciente = (Paciente) getArguments().getSerializable("paciente");
 
-
-        //preparando intent de consulta
-        intentConsulta = new Intent(getActivity(), ConsultaActivity.class);
-        intentConsulta.putExtra("paciente", paciente);
+        preparaIntentConsulta();
 
         //ação do floatting action button
         fab = (FloatingActionButton) v.findViewById(R.id.fab);
@@ -146,9 +143,10 @@ public class ConsultasPacienteFragment extends Fragment {
        valueEventListenerConsultas = consultasRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                   Consulta consulta = dataSnapshot.getValue(Consulta.class);
-                   consultas.add(consulta);
-                   adapterConsultasPaciente.notifyDataSetChanged();
+               consultas.clear();
+               Consulta consulta = dataSnapshot.getValue(Consulta.class);
+               consultas.add(consulta);
+               adapterConsultasPaciente.notifyDataSetChanged();
            }
 
            @Override
@@ -158,9 +156,16 @@ public class ConsultasPacienteFragment extends Fragment {
        })  ;
     }
 
+    public void preparaIntentConsulta(){
+        //preparando intent de consulta
+        intentConsulta = new Intent(getActivity(), ConsultaActivity.class);
+       // intentConsulta.putExtra("paciente", paciente);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
+        preparaIntentConsulta();
         recuperarConsultasPaciente();
 
     }

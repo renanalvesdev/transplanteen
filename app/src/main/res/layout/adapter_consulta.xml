@@ -1,63 +1,192 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
 
-    android:layout_height="100dp"
-    android:layout_marginTop="20dp"
+    android:layout_height="80dp"
     android:clickable="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="71dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/enfermeiro_bg">
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/enfermeiro_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtDataConsulta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/layoutDados"
+            android:layout_alignLeft="@+id/layoutDados"
+            android:layout_marginTop="5dp"
+            android:gravity="right"
+            android:padding="5dp"
+            android:text="23/03/1994"
+            android:textSize="10sp" />
 
         <LinearLayout
+            android:id="@+id/layoutDados"
             android:layout_width="match_parent"
-            android:layout_height="67dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="5dp"
             android:orientation="horizontal"
             android:weightSum="5">
 
 
-            <LinearLayout
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3.5"
                 android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingLeft="10dp">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutFrequencia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp">
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="5dp"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayoutPressao"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayoutPeso"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayoutPeso">
 
                     <TextView
-                        android:id="@+id/valor"
+                        android:id="@+id/txtFrequenciaPacienteConsulta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1.75"
                         android:textColor="@color/colorGray"
-                        android:textSize="18dp"
-                        />
+                        android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/medida"
+                        android:id="@+id/lblFrequencia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Kg"
-                        android:textColor="@color/colorGray"
                         android:layout_marginTop="5dp"
                         android:padding="5dp"
-                        android:textSize="10dp"
+                        android:text="Bpm"
+                        android:textColor="@color/colorGray"
+                        android:textSize="8sp"
 
                         />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/linearLayoutPeso"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="5dp"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayoutFrequencia"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayoutAltura"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayoutAltura">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtPesoPacienteConsulta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.75"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/lblPeso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:padding="5dp"
+                        android:text="Kg"
+                        android:textColor="@color/colorGray"
+                        android:textSize="8sp"
+
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutAltura"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="5dp"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayoutPeso"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/txtAlturaPacienteConsulta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.75"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/lblAltura"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:padding="5dp"
+                        android:text="M"
+                        android:textColor="@color/colorGray"
+                        android:textSize="8sp"
+
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutPressao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayoutFrequencia"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayoutFrequencia">
+
+                    <TextView
+                        android:id="@+id/txtPressaoPacienteConsulta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.75"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/lblPressao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:padding="5dp"
+                        android:text="mmHg"
+                        android:textColor="@color/colorGray"
+                        android:textSize="8sp"
+
+                        />
+
+                </LinearLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
 
 
             <RelativeLayout
@@ -67,18 +196,26 @@
                 android:gravity="center">
 
 
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/enfermeiro_branco" />
+
                 <TextView
-                    android:id="@+id/vname"
+                    android:id="@+id/txtNomeEnfermeiro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:background="@drawable/roun_rect_orange"
                     android:text="Blenda Vasconcelos"
                     android:textColor="#fff"
-                    android:textSize="12dp"
+                    android:textSize="8sp"
                     android:textStyle="bold" />
+
             </RelativeLayout>
 
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

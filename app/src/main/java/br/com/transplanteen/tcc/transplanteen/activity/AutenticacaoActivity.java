@@ -23,7 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +47,7 @@ import br.com.transplanteen.tcc.transplanteen.R;
 import br.com.transplanteen.tcc.transplanteen.helper.ConfiguracaoFirebase;
 import br.com.transplanteen.tcc.transplanteen.model.Enfermeiro;
 import br.com.transplanteen.tcc.transplanteen.model.Usuario;
+import br.com.transplanteen.tcc.transplanteen.notifications.Token;
 import dmax.dialog.SpotsDialog;
 
 public class AutenticacaoActivity extends AppCompatActivity {
@@ -137,6 +140,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     String usuarioId = task.getResult().getUser().getUid();
                                     recuperaUsuario(usuarioId);
+                                    updateToken(FirebaseInstanceId.getInstance().getToken());
                                 } else {
                                     Toast.makeText(AutenticacaoActivity.this, "Erro ao logar", Toast.LENGTH_SHORT).show();
                                     carregando(false);
@@ -152,10 +156,15 @@ public class AutenticacaoActivity extends AppCompatActivity {
                     Toast.makeText(AutenticacaoActivity.this, "Preencha o e-mail", Toast.LENGTH_LONG).show();
                 }
 
-
             }
         });
 
+    }
+
+    private void updateToken(String token) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(ConfiguracaoFirebase.getIdUsuario()).setValue(token1);
     }
 
     public void carregando(boolean status){

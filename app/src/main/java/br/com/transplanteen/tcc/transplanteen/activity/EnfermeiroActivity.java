@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -30,6 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import br.com.transplanteen.tcc.transplanteen.R;
 import br.com.transplanteen.tcc.transplanteen.TipoUsuario;
 import br.com.transplanteen.tcc.transplanteen.fragment.AgendaFragment;
+import br.com.transplanteen.tcc.transplanteen.fragment.DashboardPacienteFragment;
+import br.com.transplanteen.tcc.transplanteen.fragment.MedicacaoFragment;
+import br.com.transplanteen.tcc.transplanteen.fragment.MeuDiarioFragment;
 import br.com.transplanteen.tcc.transplanteen.fragment.PacientesFragment;
 import br.com.transplanteen.tcc.transplanteen.helper.ConfiguracaoFirebase;
 import br.com.transplanteen.tcc.transplanteen.helper.SimpleCallback;
@@ -59,13 +63,6 @@ public class EnfermeiroActivity extends AppCompatActivity
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-
-        //carrega tela principal
-        AgendaFragment agendaFragment = new AgendaFragment();
-        FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
-        fragment.replace(R.id.frameContainer, agendaFragment);
-        fragment.commit();
-
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +80,19 @@ public class EnfermeiroActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Intent notifyIntent = getIntent();
+
+        String extras = getIntent().getStringExtra("From");
+        ;
+        if (extras != null && extras.equals("notifyFragment")) {
+           navigationView.setCheckedItem(R.id.nav_minhas_medicacoes);
+            MedicacaoFragment medicacaoFragment = new MedicacaoFragment();
+            FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
+            fragment.replace(R.id.frameContainer, medicacaoFragment);
+            fragment.commit();
+            
+        }
 
         View headerView = navigationView.getHeaderView(0);
 
@@ -119,6 +129,7 @@ public class EnfermeiroActivity extends AppCompatActivity
                 if(usuario != null){
                     usuarioAtual = usuario;
                     exibeItemMenu();
+                    carregaFragmentInicial();
                     recuperaDadosUsuario();
                 };
             }
@@ -132,6 +143,7 @@ public class EnfermeiroActivity extends AppCompatActivity
             nav_menu.findItem(R.id.nav_ingestao_liquido).setVisible(false);
             nav_menu.findItem(R.id.nav_meu_amigo_enfermeiro).setVisible(false);
             nav_menu.findItem(R.id.nav_visitas_ao_hospital).setVisible(false);
+            nav_menu.findItem(R.id.nav_minhas_medicacoes).setVisible(false);
         }
 
         else if(usuarioAtual.getTipo().equals(TipoUsuario.PACIENTE.toString())){
@@ -139,6 +151,20 @@ public class EnfermeiroActivity extends AppCompatActivity
             nav_menu.findItem(R.id.nav_pacientes).setVisible(false);
         }
         
+    }
+
+    public void carregaFragmentInicial(){
+        //carrega tela principal
+        Fragment fragmentSeleiconada = new Fragment();
+        AgendaFragment agendaFragment = new AgendaFragment();
+        DashboardPacienteFragment dashboardPacienteFragment = new DashboardPacienteFragment();
+
+        fragmentSeleiconada = usuarioAtual.getTipo().equals(TipoUsuario.ENFERMEIRO.toString()) ? agendaFragment : dashboardPacienteFragment;
+
+        FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
+        fragment.replace(R.id.frameContainer, fragmentSeleiconada);
+        fragment.commit();
+
     }
 
     //direciona o usuario para seu perfil (paciente ou enfermeiro)
@@ -219,13 +245,25 @@ public class EnfermeiroActivity extends AppCompatActivity
             FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
             fragment.replace(R.id.frameContainer, agendaFragment);
             fragment.commit();
-        } else if (id == R.id.nav_pacientes) {
+        }
+        else if (id == R.id.nav_meu_diario) {
+            MeuDiarioFragment meuDiarioFragment = new MeuDiarioFragment();
+            FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
+            fragment.replace(R.id.frameContainer, meuDiarioFragment);
+            fragment.commit();
+        }
+        else if (id == R.id.nav_pacientes) {
             PacientesFragment pacientesFragment = new PacientesFragment();
             FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
             fragment.replace(R.id.frameContainer, pacientesFragment);
             fragment.commit();
+        }
 
-
+        else if (id == R.id.nav_minhas_medicacoes) {
+            MedicacaoFragment medicacaoFragment = new MedicacaoFragment();
+            FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
+            fragment.replace(R.id.frameContainer, medicacaoFragment);
+            fragment.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

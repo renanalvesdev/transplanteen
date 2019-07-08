@@ -18,5 +18,7 @@
     <color name="colorBackroundWhite">#f0f2ea</color>
     <color name="colorNomeEnfermeiroCard">#00B873</color>
 
+    <color name="black_semi_transparent">#B2000000</color>
+
 
 </resources>

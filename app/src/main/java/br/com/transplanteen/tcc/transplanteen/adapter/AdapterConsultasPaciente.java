@@ -40,8 +40,9 @@ public class AdapterConsultasPaciente extends RecyclerView.Adapter <AdapterConsu
         myViewHolder.peso.setText(consulta.getDadosConsulta().getPeso());
         myViewHolder.frequencia.setText(consulta.getDadosConsulta().getFrequenciaCardiaca());
         myViewHolder.pressao.setText(consulta.getDadosConsulta().getPressao());
+        myViewHolder.nomeEnfermeiro.setText(consulta.getNomeEnfermeiroExibicao());
     /*    myViewHolder.nomeEnfermeiro.setText(consulta.getNomeEnfermeiro());*/
-        myViewHolder.dataConsulta.setText(String.valueOf(consulta.getDataConsulta()));
+        myViewHolder.dataConsulta.setText(DataUtil.timestampParaData(String.valueOf(consulta.getDataConsulta())));
     }
 
     @Override
@@ -59,6 +60,7 @@ public class AdapterConsultasPaciente extends RecyclerView.Adapter <AdapterConsu
             peso= itemView.findViewById(R.id.txtPesoPacienteConsulta);
             frequencia = itemView.findViewById(R.id.txtFrequenciaPacienteConsulta);
             pressao = itemView.findViewById(R.id.txtPressaoPacienteConsulta);
+            nomeEnfermeiro = itemView.findViewById(R.id.txtNomeEnfermeiro);
           /*  nomeEnfermeiro = itemView.findViewById(R.id.txtNomeEnfermeiroConsulta);*/
             dataConsulta = itemView.findViewById(R.id.txtDataConsulta);
 

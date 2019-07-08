@@ -2,6 +2,7 @@ package br.com.transplanteen.tcc.transplanteen.util;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.widget.Toast;
 
 import br.com.transplanteen.tcc.transplanteen.activity.AutenticacaoActivity;
@@ -10,7 +11,7 @@ import dmax.dialog.SpotsDialog;
 public class MessagesUtil {
 
     public static void toastInfo(Context context, String mensagem) {
-        Toast.makeText(context, mensagem, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, mensagem, Toast.LENGTH_LONG).show();
     }
 
     public static AlertDialog dialogProcessando(Context context, String mensagem) {

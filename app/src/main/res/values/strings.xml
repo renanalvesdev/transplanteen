@@ -18,6 +18,7 @@
     <string name="consultasPaciente">Consultas</string>
 
 
+    <!--tipo de transplante-->
     <string-array name="tipo_transplante">
         <item>Tipo de transplante ...</item>
         <item>Coração</item>
@@ -27,6 +28,18 @@
         <item>Rim</item>
         <item>Intestino</item>
     </string-array>
+
+    <!--tipo de filtro ingestao de liquido-->
+    <string-array name="tipo_filtro_ingestao_liquido">
+        <item>Última semana</item>
+        <item>Último ano</item>
+        <item>Desde a última consulta</item>
+    </string-array>
+
+    <!--ingestao de liquido-->
+    <string name="copo">Copo (250 ml) </string>
+    <string name="garrafaGrande">Garrafa grande (1 Litro) </string>
+    <string name="garrafaPequena">Garrafa Pequena (500 ml) </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

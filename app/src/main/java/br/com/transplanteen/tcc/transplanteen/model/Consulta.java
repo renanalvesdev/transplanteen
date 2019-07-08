@@ -10,9 +10,9 @@ import br.com.transplanteen.tcc.transplanteen.helper.ConfiguracaoFirebase;
 public class Consulta implements Serializable {
 
     private String dataConsulta;
+    private String nomeEnfermeiroExibicao;
     private String id;
     private DadosConsulta dadosConsulta;
-    private String idPressao, idPeso, idAltura, idFrequenciaCardiaca;
 
 
     public  Consulta (){
@@ -26,44 +26,20 @@ public class Consulta implements Serializable {
         pacientes.setValue(this);
     }
 
+    public String getNomeEnfermeiroExibicao() {
+        return nomeEnfermeiroExibicao;
+    }
+
+    public void setNomeEnfermeiroExibicao(String nomeEnfermeiroExibicao) {
+        this.nomeEnfermeiroExibicao = nomeEnfermeiroExibicao;
+    }
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getIdPressao() {
-        return idPressao;
-    }
-
-    public void setIdPressao(String idPressao) {
-        this.idPressao = idPressao;
-    }
-
-    public String getIdPeso() {
-        return idPeso;
-    }
-
-    public void setIdPeso(String idPeso) {
-        this.idPeso = idPeso;
-    }
-
-    public String getIdAltura() {
-        return idAltura;
-    }
-
-    public void setIdAltura(String idAltura) {
-        this.idAltura = idAltura;
-    }
-
-    public String getIdFrequenciaCardiaca() {
-        return idFrequenciaCardiaca;
-    }
-
-    public void setIdFrequenciaCardiaca(String idFrequenciaCardiaca) {
-        this.idFrequenciaCardiaca = idFrequenciaCardiaca;
     }
 
     public String getDataConsulta() {

@@ -22,4 +22,9 @@
     <style name="padraoToolbar" parent="ThemeOverlay.AppCompat.ActionBar"></style>
 
     <style name="MyToolbar" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="customFab">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 </resources>
