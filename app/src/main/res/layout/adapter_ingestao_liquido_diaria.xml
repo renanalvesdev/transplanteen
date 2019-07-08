@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="6dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="6dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+
+        <TextView
+            android:id="@+id/txtHorario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="11dp"
+            android:layout_marginLeft="11dp"
+            android:text="19:00"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtTipoDose"
+            android:layout_width="109dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txtHorario"
+            android:layout_gravity="right"
+            android:layout_marginStart="75dp"
+            android:layout_marginLeft="75dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/txtHorario"
+            android:layout_toRightOf="@+id/txtHorario"
+            android:text="Tipo" />
+
+        <ImageView
+            android:id="@+id/iconDeletaDose"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txtTipoDose"
+            android:layout_alignBottom="@+id/txtHorario"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="54dp"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="1dp"
+            android:layout_toEndOf="@+id/txtTipoDose"
+            android:layout_toRightOf="@+id/txtTipoDose"
+            android:src="@drawable/ic_ingestao_liquido_clear_black_24dp" />
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

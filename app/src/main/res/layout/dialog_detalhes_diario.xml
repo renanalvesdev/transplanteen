@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dataDetalheDiario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="11/11/2011" />
+
+
+    <LinearLayout
+        android:id="@+id/layoutPesoDetalheDiario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/bg_meu_diario"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Peso"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valorPesoDetalheDiario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60 kg"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/statusPesoDetalheDiario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutPressaoDetalheDiario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/bg_meu_diario"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pressão"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valorPressaoDetalheDiario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="120/20"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/statusPressaoDetalheDiario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tal tal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutFrequenciaDetalheDiario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/bg_meu_diario"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Frequência"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valorFrequenciaDetalheDiario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60 BPM"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/statusFrequenciaDetalheDiario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tal Tal" />
+    </LinearLayout>
+
+</LinearLayout>
